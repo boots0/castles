@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b17q7jmfxp3yd"]
+
+[ext_resource type="Script" path="res://Scripts/deck.gd" id="1_r383g"]
+[ext_resource type="Texture2D" uid="uid://bdm2iyjaceg25" path="res://Assets/cards.png" id="1_vxmyp"]
+[ext_resource type="PackedScene" uid="uid://bb4hvpwb3avvr" path="res://Scenes/card/card_states/card.tscn" id="2_y6fb5"]
+
+[node name="Deck" type="Button"]
+offset_right = 100.0
+offset_bottom = 144.0
+script = ExtResource("1_r383g")
+card_scene = ExtResource("2_y6fb5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(48.5, 75.0946)
+scale = Vector2(1.27, 1.23154)
+texture = ExtResource("1_vxmyp")
+region_enabled = true
+region_rect = Rect2(1400, 432, 100, 144)
