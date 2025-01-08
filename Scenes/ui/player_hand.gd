@@ -1,6 +1,7 @@
 extends Node2D
 class_name PlayerHand
 
+signal card_removed(hand_count: int)
 # exported variables
 @export var card_width: float = 30.0
 @export var hand_y_position: float = 500.0
@@ -31,8 +32,8 @@ func remove_card_from_hand(card: Card) -> void:
 	if card in player_hand:
 		# card is in player hand. erase card and update hand positions
 		player_hand.erase(card)
-		print(card.name, " removed. Hand: ", player_hand)
 		update_hand_positions()
+		emit_signal("card_removed", player_hand.size())
 
 func update_hand_positions(speed: float = default_card_move_speed) -> void:
 	for i in range(player_hand.size()):
@@ -51,3 +52,12 @@ func animate_card_to_position(card: Card, new_position: Vector2, speed: float) -
 	var tween = get_tree().create_tween()
 	# .tween_property(object we want moved, property being changed, the change, speed)
 	tween.tween_property(card, "global_position", new_position, speed)
+
+# after player selects 3 face down cards to play, reveal all cards
+func flip_cards():
+	# Loop through children 
+	for child in get_children():
+		if child is Card:
+			# child is card, flip it over
+			child.get_node("AnimationPlayer").play("card_turn")
+			child.reveal()

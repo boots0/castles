@@ -11,6 +11,10 @@ const PLAYER_HAND_SIZE = 9
 @export var card_scene: PackedScene
 
 var pressed = false
+var phase = 0
+
+func _ready() -> void:
+	player_hand.connect("card_removed", _on_setup_blind_piles)
 
 func _on_deck_button_down() -> void:
 	# grab the output of deck's draw_card()
@@ -54,7 +58,7 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 		
 	if destination == card.Destination.UI_LAYER:
 		print("Reparenting to UI Layer")
-		player_hand.remove_card_from_hand(card)
+		#player_hand.remove_card_from_hand(card)
 		card.reparent(self)
 		return
 		
@@ -73,4 +77,12 @@ func _on_start_game_button_down() -> void:
 		drawn_card.global_position = deck_reference.global_position - (drawn_card.card_size / 2)
 		# add the card to the player's hand - should this happen here?
 		player_hand.add_card_to_hand(drawn_card)
+		
 	game_text.text = "Please select 3 face down cards for your Castle piles"
+
+func _on_setup_blind_piles(hand_count: int) -> void:
+	print("running on setup blind piles")
+	if hand_count == 6 and phase == 0:
+		player_hand.flip_cards()
+		game_text.text = "Please select 3 face up cards for your Castle piles"
+	print("not ready")

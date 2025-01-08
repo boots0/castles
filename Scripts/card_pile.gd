@@ -33,7 +33,7 @@ func add_card_to_pile(card: Card):
 				card.rotation_degrees = randf_range(-15, 15)
 				
 				# disable card from being clicked
-				card_collision_shape.disabled = true
+				card.set_playable(false)
 				
 				pile_text.text = str(card_pile.size())
 			else:
@@ -51,7 +51,7 @@ func add_card_to_pile(card: Card):
 		card.rotation_degrees = randf_range(-20, 20)
 		
 		# disable clicking 
-		card_collision_shape.disabled = true
+		card.set_playable(false)
 		
 		card_pile.append(card)
 		pile_text.text = str(card_pile.size())

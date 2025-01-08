@@ -7,9 +7,6 @@ func enter() -> void:
 	if ui_layer:
 		# card picked up by player and dragging, put it in ui_layer(2)
 		card.reparent_requested.emit(card, card.Destination.UI_LAYER)
-	
-	if not card.card_collision_shape.disabled:
-		card.card_collision_shape.disabled = false
 
 
 	card.scale = Vector2(1.05, 1.05)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bb4hvpwb3avvr"]
+[gd_scene load_steps=14 format=3 uid="uid://bb4hvpwb3avvr"]
 
 [ext_resource type="Script" path="res://Scenes/card/card.gd" id="1_c7wfh"]
 [ext_resource type="Texture2D" uid="uid://bdm2iyjaceg25" path="res://Assets/cards.png" id="2_qu48k"]
@@ -164,11 +164,63 @@ tracks/3/keys = {
 "values": [Vector2(1, 1), Vector2(1, -0.1), Vector2(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_w545l"]
+resource_name = "card_turn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardFront:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardBack:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBack:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(-0.1, 1), Vector2(-0.1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardFront:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(-0.1, 1), Vector2(1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dk0sk"]
 _data = {
 "RESET": SubResource("Animation_6uy8y"),
 "card_flip": SubResource("Animation_jgehb"),
-"card_flip_start": SubResource("Animation_c1r7n")
+"card_flip_start": SubResource("Animation_c1r7n"),
+"card_turn": SubResource("Animation_w545l")
 }
 
 [node name="Card" type="Control"]

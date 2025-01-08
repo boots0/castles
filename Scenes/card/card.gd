@@ -18,12 +18,14 @@ var value: int
 var sprite_region: Rect2  # stores card's sprite region
 var played: bool = false
 var card_size
+var input_enabled
 
 func initialize(suit, rank, value, sprite_region):
 	self.suit = suit
 	self.rank = rank
 	self.value = value
 	self.sprite_region = sprite_region
+	self.input_enabled = true
 	
 	# Set up front and back images
 	var card_image = get_node("CardFront")
@@ -36,15 +38,24 @@ func _ready() -> void:
 	card_state_machine.init(self)
 
 func _input(event: InputEvent) -> void:
+	
+	if not input_enabled:
+		return
 	card_state_machine.on_input(event)
 
 func _on_gui_input(event: InputEvent) -> void:
+	if not input_enabled:
+		return
 	card_state_machine.on_gui_input(event)
 
 func _on_mouse_entered() -> void:
+	if not input_enabled:
+		return
 	card_state_machine.on_mouse_entered()
 
 func _on_mouse_exited() -> void:
+	if not input_enabled:
+		return
 	card_state_machine.on_mouse_exited()
 	
 
@@ -52,8 +63,12 @@ func _on_mouse_exited() -> void:
 func _on_drop_point_detector_area_entered(area: Area2D) -> void:
 	if not targets.has(area):
 		targets.append(area)
-		print("Hovering over ", targets)
 
 func _on_drop_point_detector_area_exited(area: Area2D) -> void:
 	targets.erase(area)
-	print("Removed target array item", targets)
+
+func set_playable(status: bool):
+	self.input_enabled = status
+
+func reveal():
+	card_image.visible = true  # Show the card front
