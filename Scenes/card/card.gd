@@ -38,7 +38,6 @@ func _ready() -> void:
 	card_state_machine.init(self)
 
 func _input(event: InputEvent) -> void:
-	
 	if not input_enabled:
 		return
 	card_state_machine.on_input(event)
@@ -72,3 +71,6 @@ func set_playable(status: bool):
 
 func reveal():
 	card_image.visible = true  # Show the card front
+
+func set_played(input: bool):
+	self.played = input

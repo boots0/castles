@@ -6,13 +6,10 @@ const PLAYER_HAND_SIZE = 9
 @onready var deck_reference: Node = $Deck
 @onready var pile_reference: Node = $CardPile
 @onready var game_text: Node = $GameText
-
-
 @export var card_scene: PackedScene
 
 var pressed = false
 var phase = 0
-
 func _ready() -> void:
 	player_hand.connect("card_removed", _on_setup_blind_piles)
 
@@ -64,6 +61,8 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 		
 
 func _on_start_game_button_down() -> void:
+	#var current_phase = get_parent().get_phase()
+	#if current_phase == PhaseController.GamePhase.SETUP:
 	for i in range(PLAYER_HAND_SIZE):
 		await get_tree().create_timer(0.1).timeout
 		# add a deal_hand func in deck to deal face down
@@ -84,5 +83,5 @@ func _on_setup_blind_piles(hand_count: int) -> void:
 	print("running on setup blind piles")
 	if hand_count == 6 and phase == 0:
 		player_hand.flip_cards()
+		#update_phase(1)
 		game_text.text = "Please select 3 face up cards for your Castle piles"
-	print("not ready")

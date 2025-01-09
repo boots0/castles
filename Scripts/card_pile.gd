@@ -24,7 +24,7 @@ func add_card_to_pile(card: Card):
 			if value_check == true:
 				# card passed check, it can be added to the pile
 				card_pile.append(card)
-				
+				card.set_played(true)
 				# center the card on top of the pile
 				card.global_position = pile_center - (card.card_size / 2)
 				
@@ -54,6 +54,7 @@ func add_card_to_pile(card: Card):
 		card.set_playable(false)
 		
 		card_pile.append(card)
+		card.set_played(true)
 		pile_text.text = str(card_pile.size())
 
 # check the last player played card vs the top card in the pile

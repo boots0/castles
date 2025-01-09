@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dr7e3gliqbqol"]
+[gd_scene load_steps=9 format=3 uid="uid://dr7e3gliqbqol"]
 
+[ext_resource type="Script" path="res://phase_controller.gd" id="1_lvhgg"]
 [ext_resource type="PackedScene" uid="uid://b17q7jmfxp3yd" path="res://Scenes/deck.tscn" id="1_o1wbk"]
 [ext_resource type="Script" path="res://Scripts/playing_ui.gd" id="2_5sl1f"]
 [ext_resource type="PackedScene" uid="uid://bqp8g4s2u4l2k" path="res://Scenes/card_pile.tscn" id="2_p858k"]
@@ -25,21 +26,24 @@ offset_bottom = 645.0
 mouse_filter = 2
 color = Color(0.067795, 0.183891, 1.20327e-08, 1)
 
-[node name="PlayingUI" type="CanvasLayer" parent="." groups=["ui_layer"]]
+[node name="PhaseController" type="Node2D" parent="."]
+script = ExtResource("1_lvhgg")
+
+[node name="PlayingUI" type="CanvasLayer" parent="PhaseController" groups=["ui_layer"]]
 script = ExtResource("2_5sl1f")
 
-[node name="CardPile" parent="PlayingUI" instance=ExtResource("2_p858k")]
+[node name="CardPile" parent="PhaseController/PlayingUI" instance=ExtResource("2_p858k")]
 position = Vector2(669, 180)
 
-[node name="Deck" parent="PlayingUI" instance=ExtResource("1_o1wbk")]
+[node name="Deck" parent="PhaseController/PlayingUI" instance=ExtResource("1_o1wbk")]
 offset_left = 432.0
 offset_top = 102.0
 offset_right = 532.0
 offset_bottom = 246.0
 
-[node name="PlayerHand" parent="PlayingUI" instance=ExtResource("4_dvg06")]
+[node name="PlayerHand" parent="PhaseController/PlayingUI" instance=ExtResource("4_dvg06")]
 
-[node name="GameText" type="Label" parent="PlayingUI"]
+[node name="GameText" type="Label" parent="PhaseController/PlayingUI"]
 offset_left = 67.0
 offset_top = 347.0
 offset_right = 252.0
@@ -48,13 +52,13 @@ label_settings = SubResource("LabelSettings_hlwrt")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="CastlePile" parent="PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="CastlePile" parent="PhaseController/PlayingUI" instance=ExtResource("5_vwfhj")]
 position = Vector2(369, 387)
 
-[node name="CastlePile2" parent="PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="CastlePile2" parent="PhaseController/PlayingUI" instance=ExtResource("5_vwfhj")]
 position = Vector2(507, 387)
 
-[node name="CastlePile3" parent="PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="CastlePile3" parent="PhaseController/PlayingUI" instance=ExtResource("5_vwfhj")]
 position = Vector2(649, 387)
 
 [node name="Start Game" type="Button" parent="."]
@@ -65,5 +69,5 @@ offset_bottom = 208.0
 text = "Start Game"
 icon_alignment = 1
 
-[connection signal="button_down" from="PlayingUI/Deck" to="PlayingUI" method="_on_deck_button_down"]
-[connection signal="button_down" from="Start Game" to="PlayingUI" method="_on_start_game_button_down"]
+[connection signal="button_down" from="PhaseController/PlayingUI/Deck" to="PhaseController/PlayingUI" method="_on_deck_button_down"]
+[connection signal="button_down" from="Start Game" to="PhaseController/PlayingUI" method="_on_start_game_button_down"]

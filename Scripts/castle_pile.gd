@@ -18,6 +18,7 @@ func add_card_to_pile(card: Card):
 			# center the card on top of the pile
 			card.global_position = pile_center - (card.card_size / 2)
 			castle_pile.append(card)
+			card.set_played(true)
 			
 			# disable clicking
 			card.set_playable(false)
@@ -25,6 +26,8 @@ func add_card_to_pile(card: Card):
 			# second card
 			card.global_position = pile_center - (card.card_size / 2) + right_offset
 			castle_pile.append(card)
+			card.set_played(true)
+			
 			# disable clicking
 			card.set_playable(false)
 	else:

@@ -27,6 +27,8 @@ func add_card_to_hand(card: Card, speed: float = default_card_move_speed) -> voi
 			# card isn't in hand, put it there
 			player_hand.append(card)
 			update_hand_positions(default_card_move_speed)
+		else:
+			update_hand_positions(default_card_move_speed)
 
 func remove_card_from_hand(card: Card) -> void:
 	if card in player_hand:
