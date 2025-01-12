@@ -2,6 +2,7 @@ extends Node2D
 class_name PlayerHand
 
 signal card_removed(hand_count: int)
+
 # exported variables
 @export var card_width: float = 30.0
 @export var hand_y_position: float = 500.0

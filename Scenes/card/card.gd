@@ -16,7 +16,6 @@ var suit: String
 var rank: String
 var value: int
 var sprite_region: Rect2  # stores card's sprite region
-var played: bool = false
 var card_size
 var input_enabled
 
@@ -71,6 +70,3 @@ func set_playable(status: bool):
 
 func reveal():
 	card_image.visible = true  # Show the card front
-
-func set_played(input: bool):
-	self.played = input

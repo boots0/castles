@@ -34,13 +34,15 @@ script = ExtResource("2_5sl1f")
 
 [node name="PlayerHand" parent="GameStateController/PlayingUI" instance=ExtResource("4_dvg06")]
 
-[node name="CastlePile" parent="GameStateController/PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="Piles" type="Node2D" parent="GameStateController/PlayingUI"]
+
+[node name="CastlePile" parent="GameStateController/PlayingUI/Piles" instance=ExtResource("5_vwfhj")]
 position = Vector2(369, 387)
 
-[node name="CastlePile2" parent="GameStateController/PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="CastlePile2" parent="GameStateController/PlayingUI/Piles" instance=ExtResource("5_vwfhj")]
 position = Vector2(507, 387)
 
-[node name="CastlePile3" parent="GameStateController/PlayingUI" instance=ExtResource("5_vwfhj")]
+[node name="CastlePile3" parent="GameStateController/PlayingUI/Piles" instance=ExtResource("5_vwfhj")]
 position = Vector2(649, 387)
 
 [node name="Deck" parent="GameStateController" instance=ExtResource("1_o1wbk")]

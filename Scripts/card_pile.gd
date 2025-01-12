@@ -12,6 +12,8 @@ func _ready() -> void:
 
 
 func add_card_to_pile(card: Card):
+	# card attempted to play, emit signal to GSC to check
+	
 	var card_collision_shape = card.drop_point_detector.get_node("CollisionShape2D")
 	if card_pile.size() > 0:
 		# there are cards on the pile
@@ -24,7 +26,6 @@ func add_card_to_pile(card: Card):
 			if value_check == true:
 				# card passed check, it can be added to the pile
 				card_pile.append(card)
-				card.set_played(true)
 				# center the card on top of the pile
 				card.global_position = pile_center - (card.card_size / 2)
 				
@@ -54,7 +55,6 @@ func add_card_to_pile(card: Card):
 		card.set_playable(false)
 		
 		card_pile.append(card)
-		card.set_played(true)
 		pile_text.text = str(card_pile.size())
 
 # check the last player played card vs the top card in the pile
