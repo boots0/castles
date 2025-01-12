@@ -30,7 +30,7 @@ func initialize(suit, rank, value, sprite_region):
 	# Set up front and back images
 	var card_image = get_node("CardFront")
 	card_image.region_rect = sprite_region
-	card_image.visible = true  # Hidden initially
+	card_image.visible = false  # Hidden initially
 	
 	card_size = self.get_rect().size
 
