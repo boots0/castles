@@ -10,6 +10,7 @@ size = Vector2(100, 144)
 font_size = 26
 
 [node name="CardPile" type="Node2D"]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_d3tns")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

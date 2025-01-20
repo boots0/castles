@@ -1,13 +1,13 @@
 extends Control
 class_name Card
 
-# Goal: do not handle card logic in the card, allow the CardManager to do this
-signal reparent_requested(which_card_ui: Card, where: Destination) # 0 = hand, 1 = pile, 2 = ui_layer
+
+signal reparent_requested(which_card_ui: Card, where: Destination)
 
 @onready var card_state_machine: CardStateMachine = $CardStateMachine as CardStateMachine
 @onready var drop_point_detector: Area2D = $DropPointDetector
 @onready var card_image: Sprite2D = $CardFront
-@onready var targets: Array[Node] = []
+@onready var targets: Array[Node] = []      # used to detect what area the card is hovering over
 
 enum Destination {HAND, PILE, UI_LAYER}
 

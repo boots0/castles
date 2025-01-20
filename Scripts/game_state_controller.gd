@@ -1,21 +1,24 @@
 extends Node2D
 
 const PLAYER_HAND_SIZE = 9
+const DECK_POSITION = Vector2(697, 405)
 
 enum GamePhase { SETUP, PLAY, END }
 
-@onready var player_hand: Node = $PlayingUI/PlayerHand
-@onready var piles: Node2D = $PlayingUI/Piles
+@onready var player_hand: Node = $PlayerUI/PlayerHand
+@onready var piles: Node2D = $PlayerUI/Piles
 @onready var deck_reference: Node = $Deck
 @onready var pile_reference: Node = $CardPile
 @onready var game_text: Node = $GameText
-@onready var player_ui = $PlayingUI
+@onready var player_ui = $PlayerUI
 
 var current_phase: GamePhase = GamePhase.SETUP
+var held_card: Card
 
 func _ready() -> void:
 	player_hand.connect("card_removed", _on_game_setup)
 
+# temporary until UI implemented
 func _on_deck_button_down() -> void:
 	if current_phase == GamePhase.PLAY:
 		var drawn_card = deck_reference.draw_card()
@@ -38,13 +41,21 @@ func _on_start_game_button_down() -> void:
 		
 
 func deal_card(card: Card, player = player_ui):
+	card.global_position = DECK_POSITION - (card.card_size / 2)
+	var hand = get_node("PlayerUI/PlayerHand")
 	if current_phase == GamePhase.SETUP:
-		player.new_card(card, "card_flip_start")
+		hand.add_child(card)
+		card.reparent(hand)
+		player.add_card(card, "card_flip_start")
 	if current_phase == GamePhase.PLAY:
-		player.new_card(card, "card_flip")
+		hand.add_child(card)
+		card.reparent(hand)
+		player.add_card(card, "card_flip")
 
 func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> void:
 	# card has signaled to be reparented
+	
+	
 	if destination == card.Destination.HAND:
 		# send card to hand
 		card.reparent(player_hand)
@@ -52,8 +63,6 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 		return
 		
 	if destination == card.Destination.PILE:
-		# card was placed on a pile, remove from hand for now
-		#player_hand.remove_card_from_hand(card)
 		# get which pile was card played on
 		var target_pile = card.targets[0].get_parent()
 		
@@ -62,13 +71,21 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 			# card has been played on shared CardPile, check phase
 			if current_phase == GamePhase.PLAY:
 				# game is in PLAY, put card on pile
-				card.reparent(pile_reference)
-				pile_reference.add_card_to_pile(card)
-				player_hand.remove_card_from_hand(card)
-			elif GamePhase.SETUP:
+				# check if card can be played (pile function)
+				var card_can_be_played = pile_reference.check_card(card)
+				if card_can_be_played == true:
+					card.reparent(pile_reference)
+					pile_reference.add_card_to_pile(card)
+					player_hand.remove_card_from_hand(card)
+				else:
+					print("card cant be played")
+					player_hand.update_hand_positions()
+					return
+			elif current_phase == GamePhase.SETUP:
 				print("Card not allowed, we are in SETUP")
 				# game is in SETUP, cannot play on CardPile, send to hand
 				card.reparent(player_hand)
+				player_hand.add_card_to_hand(card)
 			else:
 				print("We shouldn't be here - line 60 game_state_controller.gd")
 				return
@@ -152,3 +169,6 @@ func set_game_phase(phase: GamePhase):
 
 func update_game_text(text: String):
 	game_text.text = text
+
+func update_held_card(card: Card):
+	held_card = card

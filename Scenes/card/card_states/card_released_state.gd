@@ -3,8 +3,7 @@ extends CardState
 
 
 func enter() -> void:
-	card.scale = Vector2(1, 1)
-
+	pass
 func on_input(_event: InputEvent) -> void:
 	if card.targets:
 		# card was played in a target area (pile), emit reparent signal to PILE
