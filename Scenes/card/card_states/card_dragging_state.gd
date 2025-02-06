@@ -3,10 +3,7 @@ extends CardState
 
 func enter() -> void:
 	print("Entered Dragging State")
-	#var ui_layer := get_tree().get_first_node_in_group("ui_layer")
-	#if ui_layer:
-		## card picked up by player and dragging, put it in ui_layer
-		#card.reparent_requested.emit(card, card.Destination.UI_LAYER)
+	card.z_index = 1
 
 func on_input(event: InputEvent) -> void:
 	var mouse_motion := event is InputEventMouseMotion

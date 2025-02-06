@@ -3,6 +3,8 @@ class_name CastlePile
 
 enum Status { EMPTY, HALF, FULL }
 
+@onready var cards_node: Node2D = $Cards
+
 var castle_pile = []
 var pile_center
 var right_offset = Vector2(20, 0)
@@ -16,6 +18,8 @@ func add_card_to_castle_pile(card: Card):
 	if current_status == Status.EMPTY:
 		# this is the first card, center the card on top of the pile
 		card.global_position = pile_center - (card.card_size / 2)
+		card.z_index = -1
+		card.reparent(cards_node)
 		castle_pile.append(card)
 		current_status = Status.HALF
 		# disable clicking
@@ -23,6 +27,8 @@ func add_card_to_castle_pile(card: Card):
 	elif current_status == Status.HALF:
 		# second card played
 		card.global_position = pile_center - (card.card_size / 2) + right_offset
+		card.z_index = -1
+		card.reparent(cards_node)
 		castle_pile.append(card)
 		current_status = Status.FULL
 		# disable clicking

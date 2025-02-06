@@ -39,6 +39,7 @@ func draw_card() -> Card:
 	
 	#new_card.position = self.position # spawn at deck
 	new_card.name = card_drawn.suit + " " + card_drawn.rank
+	#new_card.position = self.global_position
 	
 	return new_card
 	

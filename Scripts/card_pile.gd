@@ -2,6 +2,7 @@ extends Node2D
 class_name CardPile
 
 @onready var pile_text = $Label
+@onready var cards_node: Node2D = $Cards
 
 var card_pile = []
 var pile_center
@@ -30,6 +31,9 @@ func add_card_to_pile(card: Card):
 		# rotate the card for fun pile stacking effect
 		card.pivot_offset = card.card_size / 2
 		card.rotation_degrees = randf_range(-15, 15)
+		card.z_index = -1
+		card.reparent(cards_node)
+
 		
 		# disable card from being clicked
 		card.set_playable(false)
@@ -43,6 +47,8 @@ func add_card_to_pile(card: Card):
 		# rotate the card for fun pile stacking effect
 		card.pivot_offset = card.card_size / 2
 		card.rotation_degrees = randf_range(-20, 20)
+		card.z_index = -1
+		card.reparent(cards_node)
 		
 		# disable clicking 
 		card.set_playable(false)

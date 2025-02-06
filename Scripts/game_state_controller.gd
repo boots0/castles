@@ -1,9 +1,10 @@
-extends Node2D
+extends Control
+
+signal trigger_phase_check()
+signal request_phase_change(from: Game.GamePhase, to: Game.GamePhase)
 
 const PLAYER_HAND_SIZE = 9
 const DECK_POSITION = Vector2(697, 405)
-
-enum GamePhase { SETUP, PLAY, END }
 
 @onready var player_hand: Node = $PlayerUI/PlayerHand
 @onready var piles: Node2D = $PlayerUI/Piles
@@ -12,15 +13,17 @@ enum GamePhase { SETUP, PLAY, END }
 @onready var game_text: Node = $GameText
 @onready var player_ui = $PlayerUI
 
-var current_phase: GamePhase = GamePhase.SETUP
 var held_card: Card
+var current_phase 
 
 func _ready() -> void:
 	player_hand.connect("card_removed", _on_game_setup)
+	current_phase = emit_signal("trigger_phase_check")
 
 # temporary until UI implemented
 func _on_deck_button_down() -> void:
-	if current_phase == GamePhase.PLAY:
+	current_phase = emit_signal("trigger_phase_check")
+	if current_phase == Game.GamePhase.PLAY:
 		var drawn_card = deck_reference.draw_card()
 		# connect card's reparent signal
 		drawn_card.reparent_requested.connect(_on_card_reparent_requested)
@@ -28,8 +31,8 @@ func _on_deck_button_down() -> void:
 
 
 func _on_start_game_button_down() -> void:
-		#var current_phase = get_parent().get_phase()
-	if current_phase == GamePhase.SETUP:
+	current_phase = emit_signal("trigger_phase_check")
+	if current_phase == Game.GamePhase.SETUP:
 		update_game_text("Please select 3 face down cards for your Castle piles")
 		for i in range(PLAYER_HAND_SIZE):
 			await get_tree().create_timer(0.1).timeout
@@ -41,20 +44,20 @@ func _on_start_game_button_down() -> void:
 		
 
 func deal_card(card: Card, player = player_ui):
-	card.global_position = DECK_POSITION - (card.card_size / 2)
 	var hand = get_node("PlayerUI/PlayerHand")
-	if current_phase == GamePhase.SETUP:
+	current_phase = emit_signal("trigger_phase_check")
+	
+	if current_phase == Game.GamePhase.SETUP:
 		hand.add_child(card)
-		card.reparent(hand)
 		player.add_card(card, "card_flip_start")
-	if current_phase == GamePhase.PLAY:
+	if current_phase == Game.GamePhase.PLAY:
 		hand.add_child(card)
-		card.reparent(hand)
 		player.add_card(card, "card_flip")
 
 func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> void:
 	# card has signaled to be reparented
-	
+	current_phase = emit_signal("trigger_phase_check")
+
 	
 	if destination == card.Destination.HAND:
 		# send card to hand
@@ -69,7 +72,7 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 		if target_pile is CardPile:
 			print("Adding card to shared card pile")
 			# card has been played on shared CardPile, check phase
-			if current_phase == GamePhase.PLAY:
+			if current_phase == Game.GamePhase.PLAY:
 				# game is in PLAY, put card on pile
 				# check if card can be played (pile function)
 				var card_can_be_played = pile_reference.check_card(card)
@@ -81,7 +84,7 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 					print("card cant be played")
 					player_hand.update_hand_positions()
 					return
-			elif current_phase == GamePhase.SETUP:
+			elif current_phase == Game.GamePhase.SETUP:
 				print("Card not allowed, we are in SETUP")
 				# game is in SETUP, cannot play on CardPile, send to hand
 				card.reparent(player_hand)
@@ -93,7 +96,7 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 		else:
 			# card was played on CastlePile
 			
-			if current_phase == GamePhase.SETUP:
+			if current_phase == Game.GamePhase.SETUP:
 				# game is in SETUP, check CastlePile status
 				var status = target_pile.get_pile_status()
 				
@@ -120,7 +123,7 @@ func _on_card_reparent_requested(card: Card, destination: Card.Destination) -> v
 					# check if this was the last pile
 					var full_pile_count = count_full_piles(pile_statuses)
 					if full_pile_count == 2:
-						set_game_phase(GamePhase.PLAY)
+						set_game_phase(Game.GamePhase.PLAY)
 						
 				if status == target_pile.Status.FULL:
 					# CastlePile is FULL, send to hand
@@ -158,13 +161,14 @@ func count_full_piles(pile_statuses: Dictionary) -> int:
 	return count
 
 func _on_game_setup(hand_count: int):
-		if current_phase == GamePhase.SETUP:
+		current_phase = emit_signal("trigger_phase_check")
+		if current_phase == Game.GamePhase.SETUP:
 			if hand_count == 6:
 				player_hand.flip_cards()
 			if hand_count == 3:
 				update_game_text("Game is now in PLAY")
 				
-func set_game_phase(phase: GamePhase):
+func set_game_phase(phase: Game.GamePhase):
 	current_phase = phase
 
 func update_game_text(text: String):

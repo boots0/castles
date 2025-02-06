@@ -20,8 +20,23 @@ point_count = 2
 
 [node name="PlayerHand" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchor_right = 0.466
+anchor_bottom = 0.185
+pivot_offset = Vector2(325, 75)
 script = ExtResource("1_h1ipf")
 hand_spread_curve = SubResource("Curve_wqjjs")
 hand_height_curve = SubResource("Curve_n5lle")
 hand_rotation_curve = SubResource("Curve_dtxbe")
+
+[node name="Cards" type="Node2D" parent="."]
+position = Vector2(325, 75)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.996
+anchor_bottom = 1.0
+offset_right = 0.209595
+offset_bottom = 2.0
+pivot_offset = Vector2(325, 75)
+color = Color(0.251103, 0.0425585, 0.291214, 1)

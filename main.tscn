@@ -1,16 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://dr7e3gliqbqol"]
 
+[ext_resource type="Script" path="res://castles.gd" id="1_leo7m"]
 [ext_resource type="Script" path="res://Scripts/game_state_controller.gd" id="1_lvhgg"]
 [ext_resource type="PackedScene" uid="uid://b17q7jmfxp3yd" path="res://Scenes/deck.tscn" id="1_o1wbk"]
 [ext_resource type="Script" path="res://Scripts/playing_ui.gd" id="2_5sl1f"]
 [ext_resource type="PackedScene" uid="uid://bqp8g4s2u4l2k" path="res://Scenes/card_pile.tscn" id="2_p858k"]
 [ext_resource type="PackedScene" uid="uid://14f8hnghwoy4" path="res://Scenes/player_hand.tscn" id="4_dvg06"]
 [ext_resource type="PackedScene" uid="uid://cv4cbva2nfoe7" path="res://Scenes/castle_pile.tscn" id="5_vwfhj"]
-
-[sub_resource type="Curve" id="Curve_alsi3"]
-min_value = -1.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, -1), 0.0, 0.0, 0, 0]
-point_count = 2
 
 [sub_resource type="FontFile" id="FontFile_o8pxp"]
 cache/0/16/0/ascent = 0.0
@@ -22,28 +18,21 @@ cache/0/16/0/scale = 1.0
 [sub_resource type="LabelSettings" id="LabelSettings_hlwrt"]
 font = SubResource("FontFile_o8pxp")
 
-[node name="Main" type="Node2D"]
-metadata/_edit_horizontal_guides_ = [341.0, 659.0]
-metadata/_edit_vertical_guides_ = [700.0]
+[node name="Castles" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_leo7m")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 1937.0
-offset_bottom = 1109.0
-mouse_filter = 2
-color = Color(0.130955, 0.00357984, 0.184621, 1)
-
-[node name="HandBackground" type="ColorRect" parent="."]
-offset_left = 197.0
-offset_top = 655.0
-offset_right = 1213.0
-offset_bottom = 771.0
-mouse_filter = 2
-color = Color(0.194128, 0.0013389, 0.205385, 1)
-
-[node name="GameStateController" type="Node2D" parent="."]
+[node name="GameStateController" type="Control" parent="."]
+anchors_preset = 0
 script = ExtResource("1_lvhgg")
 
 [node name="Deck" parent="GameStateController" instance=ExtResource("1_o1wbk")]
+layout_mode = 0
 offset_left = 660.0
 offset_top = 269.0
 offset_right = 760.0
@@ -55,25 +44,25 @@ anchors_preset = 0
 script = ExtResource("2_5sl1f")
 
 [node name="PlayerHand" parent="GameStateController/PlayerUI" instance=ExtResource("4_dvg06")]
-offset_left = 197.0
-offset_top = 655.0
-offset_right = 1213.0
-offset_bottom = 771.0
-x_spread = 60.0
-hand_rotation_curve = SubResource("Curve_alsi3")
+layout_mode = 1
+offset_left = 32.0
+offset_top = 616.0
+offset_right = 32.0
+offset_bottom = 616.0
 
 [node name="Piles" type="Node2D" parent="GameStateController/PlayerUI"]
 
 [node name="CastlePile" parent="GameStateController/PlayerUI/Piles" instance=ExtResource("5_vwfhj")]
-position = Vector2(404, 574)
+position = Vector2(784, 689)
 
 [node name="CastlePile2" parent="GameStateController/PlayerUI/Piles" instance=ExtResource("5_vwfhj")]
-position = Vector2(524, 573)
+position = Vector2(920, 688)
 
 [node name="CastlePile3" parent="GameStateController/PlayerUI/Piles" instance=ExtResource("5_vwfhj")]
-position = Vector2(644, 573)
+position = Vector2(1056, 688)
 
 [node name="GameText" type="Label" parent="GameStateController"]
+layout_mode = 0
 offset_left = 144.0
 offset_top = 133.0
 offset_right = 329.0
@@ -87,6 +76,7 @@ position = Vector2(893, 343)
 scale = Vector2(1, 1)
 
 [node name="Start Game" type="Button" parent="."]
+layout_mode = 0
 offset_left = 35.0
 offset_top = 23.0
 offset_right = 164.0

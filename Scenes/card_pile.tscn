@@ -13,8 +13,11 @@ font_size = 26
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_d3tns")
 
+[node name="Cards" type="Node2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.333333)
+z_index = -2
 texture = ExtResource("1_kh8vd")
 region_enabled = true
 region_rect = Rect2(1400, 0, 100, 144)
